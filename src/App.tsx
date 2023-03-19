@@ -7,6 +7,7 @@ import { useAppSelector } from 'app/hooks';
 
 function App() {
     const username = useAppSelector((state) => state.userSearch.value);
+    console.log('username', username);
     return (
         <Grid
             templateAreas={`"header header"

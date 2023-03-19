@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface UserSearchsState {
-    value: string;
+    value: string | undefined;
 }
 
 const initialState: UserSearchsState = {
-    value: '',
+    value: undefined,
 };
 
 export const userSearchSlice = createSlice({
