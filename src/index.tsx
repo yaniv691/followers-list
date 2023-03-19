@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ChakraProvider } from '@chakra-ui/react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -15,14 +15,11 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <ChakraProvider>
-                <BrowserRouter>
+                <HashRouter>
                     <Routes>
-                        <Route
-                            path="/followers-list/:username?"
-                            element={<App />}
-                        />
+                        <Route path="/:username?" element={<App />} />
                     </Routes>
-                </BrowserRouter>
+                </HashRouter>
             </ChakraProvider>
         </Provider>
     </React.StrictMode>

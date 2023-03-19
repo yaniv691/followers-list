@@ -32,7 +32,7 @@ export default function UserSearch() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        navigate(`/followers-list/${username}`);
+        navigate(`/${username}`);
         dispatch(githubApi.util.resetApiState());
         dispatch(updateSearchValue(username));
     };
