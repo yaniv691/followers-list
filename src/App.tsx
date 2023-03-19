@@ -1,10 +1,9 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import Followers from 'features/followers/Followers';
+import FollowersList from 'features/followers/FollowersList';
 import UserInfo from 'features/user-info/UserInfo';
 import UserSearch from './features/user-search/UserSearch';
 import Header from 'features/header/Header';
 import { useAppSelector } from 'app/hooks';
-
 
 function App() {
     const username = useAppSelector((state) => state.userSearch.value);
@@ -35,7 +34,7 @@ function App() {
                         <UserInfo />
                     </GridItem>
                     <GridItem area={'main'} minHeight="0">
-                        <Followers />
+                        <FollowersList />
                     </GridItem>
                 </>
             )}

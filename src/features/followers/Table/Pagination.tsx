@@ -1,7 +1,7 @@
 import { MutableRefObject } from 'react';
 import { ButtonGroup, Button, Flex, Box, Show } from '@chakra-ui/react';
 import { Table } from '@tanstack/table-core';
-import { User } from 'features/followers/Followers';
+import { User } from 'features/followers/FollowersList';
 
 interface IProps {
     table: Table<User>;
