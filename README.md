@@ -1,19 +1,17 @@
-
 # Github Followers List
 
-Single page application that lets you search for a user on Github and show a list of the user's followers.
-
+Responsive single page application that lets you search for a user on Github and show a list of the user's followers.
 
 ## Demo
 
 https://yaniv691.github.io/followers-list/
 
-
 ## Prerequisites
 
-- Node >= 14
+-   Node >= 14
 
-- npm
+-   npm
+
 ## Installation and Running Locally
 
 Clone the project
@@ -41,7 +39,6 @@ Start the local server to run in development mode
 ```
 
 Open http://localhost:3000 to view it in the browser.
-
 
 ## Tech Stack
 

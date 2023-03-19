@@ -8,6 +8,7 @@ import {
     Heading,
     SkeletonCircle,
     SkeletonText,
+    Text,
 } from '@chakra-ui/react';
 import { LinkIcon } from '@chakra-ui/icons';
 
@@ -32,7 +33,7 @@ export default function UserInfo() {
                 <>Error fetching user</>
             ) : isFetching ? (
                 <Flex flexDirection="column">
-                    <SkeletonCircle size="250px" />
+                    <SkeletonCircle size={['100px', '250px']} />
                     <SkeletonText
                         mt="4"
                         noOfLines={4}
@@ -42,30 +43,38 @@ export default function UserInfo() {
                 </Flex>
             ) : data ? (
                 <Flex flexDirection="column">
-                    <Link href={html_url} isExternal>
-                        <Image
-                            borderRadius="full"
-                            boxSize="250px"
-                            src={avatar_url}
-                            alt={name ?? login}
-                            mb={4}
-                        />
-                    </Link>
-                    <Heading as="h3" size="lg">
+                    <Flex
+                        flexDirection={['row', 'column']}
+                        alignItems={['center', 'initial']}
+                    >
                         <Link href={html_url} isExternal>
-                            {name}
+                            <Image
+                                borderRadius="full"
+                                boxSize={['100px', '250px']}
+                                src={avatar_url}
+                                alt={name ?? login}
+                                mb={[0, 4]}
+                                mr={[4, 0]}
+                            />
                         </Link>
-                    </Heading>
-                    <Heading as="h4" size="md" fontWeight="normal">
-                        <Link href={html_url} isExternal>
-                            {login}
-                        </Link>
-                    </Heading>
-                    {bio && <Box mt={4}>{bio}</Box>}
-                    <Box mt={4}>
+                        <Box>
+                            <Heading as="h3" size="lg">
+                                <Link href={html_url} isExternal>
+                                    {name}
+                                </Link>
+                            </Heading>
+                            <Heading as="h4" size="md" fontWeight="normal">
+                                <Link href={html_url} isExternal>
+                                    {login}
+                                </Link>
+                            </Heading>
+                        </Box>
+                    </Flex>
+                    {bio && <Text mt={4}>{bio}</Text>}
+                    <Text mt={4}>
                         {numberFormatter.format(followers)} followers ·{' '}
                         {numberFormatter.format(following)} following
-                    </Box>
+                    </Text>
 
                     {blog && (
                         <Flex alignItems="center" mt={4}>

@@ -38,7 +38,7 @@ export default function UserSearch() {
     };
     return (
         <form onSubmit={handleSubmit}>
-            <Flex width="600px" maxWidth="100%">
+            <Flex width={['auto', '600px']}>
                 <InputGroup>
                     <InputLeftElement
                         h="100%"

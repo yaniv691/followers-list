@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import {
     PaginationState,
     useReactTable,
@@ -23,13 +23,13 @@ import {
     useToast,
     Skeleton,
     Alert,
-    AlertIcon,
     Box,
 } from '@chakra-ui/react';
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
 import Pagination from './Pagination';
 import { useGetFollowersByUsernameQuery } from 'services/github-api';
-import { useAppSelector } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { updateTotalPages } from 'features/followers/followersSlice';
 
 export type User = {
     login: string;
@@ -58,7 +58,12 @@ export default function Followers() {
                     return (
                         <Link href={html_url} isExternal>
                             <Flex alignItems="center">
-                                <Avatar src={avatar_url} name={login} mr={3} />
+                                <Avatar
+                                    size={['sm', 'md']}
+                                    src={avatar_url}
+                                    name={login}
+                                    mr={3}
+                                />
                                 {login}
                             </Flex>
                         </Link>
@@ -73,17 +78,24 @@ export default function Followers() {
         []
     );
     const username = useAppSelector((state) => state.userSearch.value);
+    const totalPages = useAppSelector((state) => state.followers.totalPages);
     const { data, error, isFetching } = useGetFollowersByUsernameQuery({
         username,
         page: pageIndex + 1,
     });
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        data?.totalPages && dispatch(updateTotalPages(data.totalPages));
+    }, [data?.totalPages]);
 
     const tableContainerRef = useRef<null | HTMLTableElement>(null);
 
     const table = useReactTable({
         data: data?.followers ?? [],
         columns,
-        pageCount: data?.totalPages,
+        pageCount: totalPages,
         state: {
             sorting,
             pagination: {

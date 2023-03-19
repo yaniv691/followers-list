@@ -6,7 +6,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import './index.css';
+import theme from 'theme';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -14,7 +14,7 @@ const root = createRoot(container);
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <ChakraProvider>
+            <ChakraProvider theme={theme}>
                 <HashRouter>
                     <Routes>
                         <Route path="/:username?" element={<App />} />

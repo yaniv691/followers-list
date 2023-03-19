@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 // import { setupListeners } from '@reduxjs/toolkit/query';
-import userSearchReducer from '../features/user-search/userSearchSlice';
-import { githubApi } from '../services/github-api';
+import userSearchReducer from 'features/user-search/userSearchSlice';
+import followersReducer from 'features/followers/followersSlice';
+import { githubApi } from 'services/github-api';
 
 export const store = configureStore({
     reducer: {
         userSearch: userSearchReducer,
+        followers: followersReducer,
         [githubApi.reducerPath]: githubApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>

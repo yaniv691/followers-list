@@ -1,6 +1,6 @@
 import { Flex, Heading, Image } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import GithubLogo from 'github-logo.svg';
+
 export default function Header() {
     return (
         <Flex alignItems="center" mb={4}>
