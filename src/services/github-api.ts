@@ -1,8 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Endpoints } from '@octokit/types';
+
+type UserResponse = Endpoints['GET /users/{username}']['response'];
 
 function parseLinkHeader(header: string) {
     if (header?.length === 0) {
-        throw new Error('input must not be of zero length');
+        throw new Error('Input must not be of zero length');
     }
 
     const parts = header.split(',');
@@ -11,7 +14,7 @@ function parseLinkHeader(header: string) {
     for (let i = 0; i < parts.length; i++) {
         const section = parts[i].split(';');
         if (section.length !== 2) {
-            throw new Error("section could not be split on ';'");
+            throw new Error("Section could not be split on ';'");
         }
         const url = section[0].replace(/<(.*)>/, '$1').trim();
         const name = section[1].replace(/rel="(.*)"/, '$1').trim();
@@ -24,11 +27,14 @@ export const githubApi = createApi({
     reducerPath: 'githubApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://api.github.com/' }),
     endpoints: (builder) => ({
-        getUserByUsername: builder.query<any, any>({
+        getUserByUsername: builder.query<UserResponse, string>({
             query: (username: string) => `users/${username}`,
         }),
 
-        getFollowersByUsername: builder.query<any, any>({
+        getFollowersByUsername: builder.query<
+            any,
+            { username: string; page: number }
+        >({
             query: ({ username, page }) =>
                 `users/${username}/followers?page=${page ?? 1}`,
 
