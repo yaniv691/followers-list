@@ -24,7 +24,6 @@ export default function UserInfo() {
         html_url,
         blog,
     } = data || {};
-
     const numberFormatter = Intl.NumberFormat('en', { notation: 'compact' });
 
     return (
