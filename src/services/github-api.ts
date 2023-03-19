@@ -1,7 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Endpoints } from '@octokit/types';
-
-type UserResponse = Endpoints['GET /users/{username}']['response'];
 
 function parseLinkHeader(header: string) {
     if (header?.length === 0) {
@@ -27,13 +24,13 @@ export const githubApi = createApi({
     reducerPath: 'githubApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://api.github.com/' }),
     endpoints: (builder) => ({
-        getUserByUsername: builder.query<UserResponse, string>({
+        getUserByUsername: builder.query<any, string | undefined>({
             query: (username: string) => `users/${username}`,
         }),
 
         getFollowersByUsername: builder.query<
             any,
-            { username: string; page: number }
+            { username: string | undefined; page: number }
         >({
             query: ({ username, page }) =>
                 `users/${username}/followers?page=${page ?? 1}`,
