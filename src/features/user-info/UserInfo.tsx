@@ -9,6 +9,7 @@ import {
     SkeletonCircle,
     SkeletonText,
     Text,
+    useToast,
 } from '@chakra-ui/react';
 import { LinkIcon } from '@chakra-ui/icons';
 
@@ -27,11 +28,20 @@ export default function UserInfo() {
     } = data || {};
     const numberFormatter = Intl.NumberFormat('en', { notation: 'compact' });
 
+    const toast = useToast();
+
+    const toastId = 'user-info-error';
+    if (error && !toast.isActive(toastId)) {
+        toast({
+            id: toastId,
+            title: 'Error fetching user info',
+            status: 'error',
+        });
+    }
+
     return (
         <>
-            {error ? (
-                <>Error fetching user</>
-            ) : isFetching ? (
+            {isFetching ? (
                 <Flex flexDirection="column">
                     <SkeletonCircle size={['100px', '250px']} />
                     <SkeletonText

@@ -114,13 +114,16 @@ export default function FollowersList() {
     if (error && !toast.isActive(toastId)) {
         toast({
             id: toastId,
-            title: 'Task failed successfully',
+            title: 'Error fetching followers list',
             status: 'error',
         });
     }
+
     if (data?.followers.length === 0) {
         return <NoFollowers username={username} />;
     }
+
+    if (error) return null;
 
     return (
         <TableContainer
