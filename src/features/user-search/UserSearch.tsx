@@ -14,9 +14,10 @@ import { updateSearchValue } from 'features/user-search/userSearchSlice';
 export default function UserSearch() {
     const [username, setUsername] = useState('');
     const dispatch = useAppDispatch();
+    
     const handleChange = (e: React.FormEvent<HTMLInputElement>): void =>
         setUsername(e.currentTarget.value);
-        
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(githubApi.util.resetApiState());
