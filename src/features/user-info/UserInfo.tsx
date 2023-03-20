@@ -10,7 +10,7 @@ import {
     SkeletonText,
     Text,
     useToast,
-    VStack,
+    Stack,
 } from '@chakra-ui/react';
 import { LinkIcon } from '@chakra-ui/icons';
 
@@ -55,18 +55,26 @@ export default function UserInfo() {
                     />
                 </Flex>
             ) : data ? (
-                <Flex flexDirection={['row', 'column']}>
-                    <Link href={html_url} isExternal>
-                        <Image
-                            borderRadius="full"
-                            boxSize={['150px', '100%', '100%', '2xs']}
-                            src={avatar_url}
-                            alt={name ?? login}
-                            mb={[0, 4]}
-                            mr={[4, 0]}
-                        />
-                    </Link>
-                    <VStack spacing={[2, 3]} alignItems="flex-start">
+                <Stack
+                    direction={['row', 'column']}
+                    alignItems="center"
+                    spacing={2}
+                >
+                    <Box>
+                        <Link href={html_url} isExternal>
+                            <Image
+                                borderRadius="full"
+                                boxSize="80%"
+                                src={avatar_url}
+                                alt={name ?? login}
+                            />
+                        </Link>
+                    </Box>
+                    <Stack
+                        direction="column"
+                        spacing={[2, 3]}
+                        alignItems="flex-start"
+                    >
                         <Box>
                             <Heading as="h3" size="lg">
                                 <Link href={html_url} isExternal>
@@ -94,8 +102,8 @@ export default function UserInfo() {
                                 </Link>
                             </Flex>
                         )}
-                    </VStack>
-                </Flex>
+                    </Stack>
+                </Stack>
             ) : null}
         </>
     );

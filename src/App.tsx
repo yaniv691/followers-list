@@ -19,8 +19,8 @@ function App() {
             templateRows={['repeat(3, auto)', 'auto minmax(0, 1fr)']}
             // templateColumns={'20vw 1fr'}
             templateColumns={['1fr', '20vw 1fr']}
-            gap={[4, 12]}
-            p={[6, 10]}
+            gap={[4, 8, 12]}
+            p={[6, 8, 10]}
             h={['100vh']}
         >
             <GridItem area={'header'}>
