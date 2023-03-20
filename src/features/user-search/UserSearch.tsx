@@ -58,7 +58,12 @@ export default function UserSearch() {
                         }}
                     />
                 </InputGroup>
-                <Button onClick={handleSubmit} ml={4} size="lg">
+                <Button
+                    onClick={handleSubmit}
+                    ml={4}
+                    size="lg"
+                    colorScheme="blue"
+                >
                     Search
                 </Button>
             </Flex>

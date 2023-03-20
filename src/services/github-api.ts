@@ -24,14 +24,11 @@ export const githubApi = createApi({
     reducerPath: 'githubApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://api.github.com/' }),
     endpoints: (builder) => ({
-        getUserByUsername: builder.query<any, string | undefined>({
+        getUserByUsername: builder.query<any, any>({
             query: (username: string) => `users/${username}`,
         }),
 
-        getFollowersByUsername: builder.query<
-            any,
-            { username: string | undefined; page: number }
-        >({
+        getFollowersByUsername: builder.query<any, any>({
             query: ({ username, page }) =>
                 `users/${username}/followers?page=${page ?? 1}`,
 

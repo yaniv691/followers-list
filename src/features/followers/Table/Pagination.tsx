@@ -25,6 +25,7 @@ export default function Pagination({
             justifyContent={['center', 'flex-end']}
             alignItems="center"
             bg="white"
+            pr={5}
         >
             <Show breakpoint="(min-width: 800px)">
                 <Box as="span" mr={4}>
@@ -35,7 +36,13 @@ export default function Pagination({
                     </strong>
                 </Box>
             </Show>
-            <ButtonGroup isAttached justifyContent="flex-end" display="flex">
+            <ButtonGroup
+                isAttached
+                justifyContent="flex-end"
+                display="flex"
+                variant="outline"
+                colorScheme="blue"
+            >
                 <Button onClick={() => table.setPageIndex(0)}>First</Button>
                 {pageIndex !== 0 && (
                     <Button onClick={() => table.previousPage()}>Prev</Button>

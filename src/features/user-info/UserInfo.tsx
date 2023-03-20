@@ -10,6 +10,7 @@ import {
     SkeletonText,
     Text,
     useToast,
+    VStack,
 } from '@chakra-ui/react';
 import { LinkIcon } from '@chakra-ui/icons';
 
@@ -52,21 +53,18 @@ export default function UserInfo() {
                     />
                 </Flex>
             ) : data ? (
-                <Flex flexDirection="column">
-                    <Flex
-                        flexDirection={['row', 'column']}
-                        alignItems={['center', 'initial']}
-                    >
-                        <Link href={html_url} isExternal>
-                            <Image
-                                borderRadius="full"
-                                boxSize={['100px', '250px']}
-                                src={avatar_url}
-                                alt={name ?? login}
-                                mb={[0, 4]}
-                                mr={[4, 0]}
-                            />
-                        </Link>
+                <Flex flexDirection={['row', 'column']}>
+                    <Link href={html_url} isExternal>
+                        <Image
+                            borderRadius="full"
+                            boxSize={['150px', '100%', '100%', '2xs']}
+                            src={avatar_url}
+                            alt={name ?? login}
+                            mb={[0, 4]}
+                            mr={[4, 0]}
+                        />
+                    </Link>
+                    <VStack spacing={[2, 3]} alignItems="flex-start">
                         <Box>
                             <Heading as="h3" size="lg">
                                 <Link href={html_url} isExternal>
@@ -79,21 +77,22 @@ export default function UserInfo() {
                                 </Link>
                             </Heading>
                         </Box>
-                    </Flex>
-                    {bio && <Text mt={4}>{bio}</Text>}
-                    <Text mt={4}>
-                        {numberFormatter.format(followers)} followers ·{' '}
-                        {numberFormatter.format(following)} following
-                    </Text>
 
-                    {blog && (
-                        <Flex alignItems="center" mt={4}>
-                            <LinkIcon mr={2} />
-                            <Link href={`https://${blog}`} isExternal>
-                                {blog}
-                            </Link>
-                        </Flex>
-                    )}
+                        {bio && <Text fontSize="sm">{bio}</Text>}
+                        <Text fontSize="sm">
+                            {numberFormatter.format(followers)} followers ·{' '}
+                            {numberFormatter.format(following)} following
+                        </Text>
+
+                        {blog && (
+                            <Flex alignItems="center" fontSize="sm">
+                                <LinkIcon mr={2} />
+                                <Link href={`https://${blog}`} isExternal>
+                                    {blog}
+                                </Link>
+                            </Flex>
+                        )}
+                    </VStack>
                 </Flex>
             ) : null}
         </>
