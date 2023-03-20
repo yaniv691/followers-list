@@ -3,7 +3,7 @@ import { ButtonGroup, Button, Flex, Box, Show } from '@chakra-ui/react';
 import { Table } from '@tanstack/table-core';
 import { User } from 'features/followers/FollowersList';
 
-interface IProps {
+interface PaginationProps {
     table: Table<User>;
     pageIndex: number;
     tableContainerRef: MutableRefObject<HTMLTableElement | null>;
@@ -13,10 +13,10 @@ export default function Pagination({
     table,
     pageIndex,
     tableContainerRef,
-}: IProps) {
-    // if (table.getPageCount() < 2) {
-    //     return null;
-    // }
+}: PaginationProps) {
+    if (table.getPageCount() < 2) {
+        return null;
+    }
     return (
         <Flex
             position="sticky"

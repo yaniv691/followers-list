@@ -35,8 +35,10 @@ export default function UserInfo() {
     if (error && !toast.isActive(toastId)) {
         toast({
             id: toastId,
-            title: 'Error fetching user info',
+            title: 'Oops!',
+            description: 'Error fetching user info, please try again later.',
             status: 'error',
+            position: 'top',
         });
     }
 

@@ -114,8 +114,10 @@ export default function FollowersList() {
     if (error && !toast.isActive(toastId)) {
         toast({
             id: toastId,
-            title: 'Error fetching followers list',
+            title: 'Oops!',
+            description: 'Error fetching followers list, please try again later.',
             status: 'error',
+            position: 'top',
         });
     }
 
