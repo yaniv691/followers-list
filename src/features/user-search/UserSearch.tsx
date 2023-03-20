@@ -6,17 +6,19 @@ import {
     InputLeftElement,
     Button,
     Flex,
+    FormControl,
+    FormErrorMessage,
+    FormHelperText,
 } from '@chakra-ui/react';
 import { Search2Icon } from '@chakra-ui/icons';
 import { githubApi } from 'services/github-api';
 import { useAppDispatch } from 'app/hooks';
 import { updateSearchValue } from 'features/user-search/userSearchSlice';
 
-const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z0-9-]+$/;
-
 export default function UserSearch() {
     const params = useParams();
     const [username, setUsername] = useState<string>(params.username || '');
+    const [isValid, setIsValid] = useState<boolean>(true);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -27,8 +29,10 @@ export default function UserSearch() {
         }
     }, [params.username, dispatch]);
 
-    const handleChange = (e: React.FormEvent<HTMLInputElement>): void =>
+    const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
+        setIsValid(/^$|^[a-zA-Z0-9-]+$/.test(e.currentTarget.value));
         setUsername(e.currentTarget.value);
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -39,26 +43,30 @@ export default function UserSearch() {
     return (
         <form onSubmit={handleSubmit}>
             <Flex width={['auto', '600px']}>
-                <InputGroup>
-                    <InputLeftElement
-                        h="100%"
-                        pointerEvents="none"
-                        children={<Search2Icon color="gray.300" />}
-                    />
-                    <Input
-                        autoFocus
-                        value={username}
-                        placeholder="Github username"
-                        onChange={handleChange}
-                        size="lg"
-                        onKeyDown={(event) => {
-                            if (!ALPHA_NUMERIC_DASH_REGEX.test(event.key)) {
-                                event.preventDefault();
-                            }
-                        }}
-                    />
-                </InputGroup>
+                <FormControl isInvalid={!isValid}>
+                    <InputGroup>
+                        <InputLeftElement
+                            h="100%"
+                            pointerEvents="none"
+                            children={<Search2Icon color="gray.300" />}
+                        />
+
+                        <Input
+                            autoFocus
+                            value={username}
+                            placeholder="Github username"
+                            onChange={handleChange}
+                            size="lg"
+                        />
+                    </InputGroup>
+                    {isValid ? (
+                        <FormHelperText>&nbsp;</FormHelperText>
+                    ) : (
+                        <FormErrorMessage>Usernames can only contain alphanumeric characters and dashes (-)</FormErrorMessage>
+                    )}
+                </FormControl>
                 <Button
+                    isDisabled={!isValid || !username}
                     onClick={handleSubmit}
                     ml={4}
                     size="lg"
