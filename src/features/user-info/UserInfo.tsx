@@ -13,6 +13,7 @@ import {
     Stack,
 } from '@chakra-ui/react';
 import { LinkIcon } from '@chakra-ui/icons';
+import { isFetchBaseQueryError } from 'app/utils';
 
 export default function UserInfo() {
     const username = useAppSelector((state) => state.userSearch.value);
@@ -32,14 +33,18 @@ export default function UserInfo() {
     const toast = useToast();
 
     const toastId = 'user-info-error';
-    if (error && !toast.isActive(toastId)) {
+    if (error && isFetchBaseQueryError(error) && !toast.isActive(toastId)) {
         toast({
             id: toastId,
             title: 'Oops!',
-            description: 'Error fetching user info, please try again later.',
+            description:
+                error.status === 404
+                    ? 'User not found.'
+                    : 'Error fetching user info, please try again later.',
             status: 'error',
             position: 'top',
         });
+        return null;
     }
 
     return (
@@ -57,7 +62,7 @@ export default function UserInfo() {
             ) : data ? (
                 <Stack
                     direction={['row', 'column']}
-                    alignItems="center"
+                    alignItems={['center', 'flex-start']}
                     spacing={2}
                 >
                     <Box>

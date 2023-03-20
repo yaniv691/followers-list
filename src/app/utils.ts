@@ -1,3 +1,5 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+
 export const parseLinkHeader = (header: string) => {
     if (header?.length === 0) {
         throw new Error('Input must not be of zero length');
@@ -16,4 +18,10 @@ export const parseLinkHeader = (header: string) => {
         links[name] = url;
     }
     return links;
+};
+
+export const isFetchBaseQueryError = (
+    error: unknown
+): error is FetchBaseQueryError => {
+    return typeof error === 'object' && error != null && 'status' in error;
 };

@@ -23,6 +23,7 @@ import { updateTotalPages } from 'features/followers/followersSlice';
 import TableHead from './Table/TableHead';
 import TableBody from './Table/TableBody';
 import NoFollowers from './NoFollowers';
+import { isFetchBaseQueryError } from 'app/utils';
 
 const PAGE_SIZE = 30;
 
@@ -111,11 +112,18 @@ export default function FollowersList() {
     });
 
     const toastId = 'followers-error';
-    if (error && !toast.isActive(toastId)) {
+    console.log('error', error);
+    if (
+        error &&
+        isFetchBaseQueryError(error) &&
+        error.status !== 404 &&
+        !toast.isActive(toastId)
+    ) {
         toast({
             id: toastId,
             title: 'Oops!',
-            description: 'Error fetching followers list, please try again later.',
+            description:
+                'Error fetching followers list, please try again later.',
             status: 'error',
             position: 'top',
         });
