@@ -1,10 +1,10 @@
 import { Tbody, Tr, Td, Skeleton } from '@chakra-ui/react';
 import { flexRender } from '@tanstack/react-table';
 import { Table } from '@tanstack/table-core';
-import { User } from 'features/followers/FollowersList';
+import { FollowersListUser } from 'app/types';
 
 interface TableBodyProps {
-    table: Table<User>;
+    table: Table<FollowersListUser>;
     isFetching: boolean;
 }
 export default function TableBody({ table, isFetching }: TableBodyProps) {

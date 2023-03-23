@@ -9,15 +9,19 @@ import {
     SkeletonCircle,
     SkeletonText,
     Text,
-    useToast,
     Stack,
 } from '@chakra-ui/react';
 import { LinkIcon } from '@chakra-ui/icons';
 import { isFetchBaseQueryError } from 'app/utils';
+import { useErrorToast } from 'app/hooks';
 
 export default function UserInfo() {
     const username = useAppSelector((state) => state.userSearch.value);
-    const { data, error, isFetching } = useGetUserByUsernameQuery(username);
+    const {
+        data: userInfo,
+        error,
+        isFetching,
+    } = useGetUserByUsernameQuery(username);
     const {
         avatar_url,
         name,
@@ -27,23 +31,19 @@ export default function UserInfo() {
         bio,
         html_url,
         blog,
-    } = data || {};
+    } = userInfo || {};
     const numberFormatter = Intl.NumberFormat('en', { notation: 'compact' });
 
-    const toast = useToast();
+    const errorToast = useErrorToast(
+        true,
+        isFetchBaseQueryError(error) && error.status === 404
+            ? 'User not found.'
+            : 'Error fetching followers list, please try again later.',
+        'user-error'
+    );
 
-    const toastId = 'user-info-error';
-    if (error && isFetchBaseQueryError(error) && !toast.isActive(toastId)) {
-        toast({
-            id: toastId,
-            title: 'Oops!',
-            description:
-                error.status === 404
-                    ? 'User not found.'
-                    : 'Error fetching user info, please try again later.',
-            status: 'error',
-            position: 'top',
-        });
+    if (error) {
+        errorToast();
         return null;
     }
 
@@ -59,57 +59,59 @@ export default function UserInfo() {
                         skeletonHeight="2"
                     />
                 </Flex>
-            ) : data ? (
-                <Stack
-                    direction={['row', 'column']}
-                    alignItems={['center', 'flex-start']}
-                    spacing={2}
-                >
-                    <Box>
-                        <Link href={html_url} isExternal>
-                            <Image
-                                borderRadius="full"
-                                boxSize="80%"
-                                src={avatar_url}
-                                alt={name ?? login}
-                            />
-                        </Link>
-                    </Box>
+            ) : (
+                <>
                     <Stack
-                        direction="column"
-                        spacing={[2, 3]}
-                        alignItems="flex-start"
+                        direction={['row', 'column']}
+                        alignItems={['center', 'flex-start']}
+                        spacing={2}
                     >
                         <Box>
-                            <Heading as="h3" size="lg">
-                                <Link href={html_url} isExternal>
-                                    {name}
-                                </Link>
-                            </Heading>
-                            <Heading as="h4" size="md" fontWeight="normal">
-                                <Link href={html_url} isExternal>
-                                    {login}
-                                </Link>
-                            </Heading>
+                            <Link href={html_url} isExternal>
+                                <Image
+                                    borderRadius="full"
+                                    boxSize="80%"
+                                    src={avatar_url}
+                                    alt={name ?? login}
+                                />
+                            </Link>
                         </Box>
+                        <Stack
+                            direction="column"
+                            spacing={[2, 3]}
+                            alignItems="flex-start"
+                        >
+                            <Box>
+                                <Heading as="h3" size="lg">
+                                    <Link href={html_url} isExternal>
+                                        {name}
+                                    </Link>
+                                </Heading>
+                                <Heading as="h4" size="md" fontWeight="normal">
+                                    <Link href={html_url} isExternal>
+                                        {login}
+                                    </Link>
+                                </Heading>
+                            </Box>
 
-                        {bio && <Text fontSize="sm">{bio}</Text>}
-                        <Text fontSize="sm">
-                            {numberFormatter.format(followers)} followers ·{' '}
-                            {numberFormatter.format(following)} following
-                        </Text>
+                            {bio && <Text fontSize="sm">{bio}</Text>}
+                            <Text fontSize="sm">
+                                {numberFormatter.format(followers)} followers ·{' '}
+                                {numberFormatter.format(following)} following
+                            </Text>
 
-                        {blog && (
-                            <Flex alignItems="center" fontSize="sm">
-                                <LinkIcon mr={2} />
-                                <Link href={`https://${blog}`} isExternal>
-                                    {blog}
-                                </Link>
-                            </Flex>
-                        )}
+                            {blog && (
+                                <Flex alignItems="center" fontSize="sm">
+                                    <LinkIcon mr={2} />
+                                    <Link href={`https://${blog}`} isExternal>
+                                        {blog}
+                                    </Link>
+                                </Flex>
+                            )}
+                        </Stack>
                     </Stack>
-                </Stack>
-            ) : null}
+                </>
+            )}
         </>
     );
 }

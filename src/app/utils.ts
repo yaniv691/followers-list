@@ -1,4 +1,5 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { useToast } from '@chakra-ui/react';
 
 export const parseLinkHeader = (header: string) => {
     if (header?.length === 0) {
@@ -25,3 +26,4 @@ export const isFetchBaseQueryError = (
 ): error is FetchBaseQueryError => {
     return typeof error === 'object' && error != null && 'status' in error;
 };
+

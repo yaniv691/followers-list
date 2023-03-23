@@ -1,10 +1,10 @@
 import { MutableRefObject } from 'react';
 import { ButtonGroup, Button, Flex, Box, Show } from '@chakra-ui/react';
 import { Table } from '@tanstack/table-core';
-import { User } from 'features/followers/FollowersList';
+import { FollowersListUser } from 'app/types';
 
 interface PaginationProps {
-    table: Table<User>;
+    table: Table<FollowersListUser>;
     pageIndex: number;
     tableContainerRef: MutableRefObject<HTMLTableElement | null>;
 }
