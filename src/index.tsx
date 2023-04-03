@@ -6,7 +6,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import theme from 'theme';
+import theme from 'styles/theme';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

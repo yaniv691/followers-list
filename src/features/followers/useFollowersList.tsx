@@ -28,7 +28,7 @@ export default function useFollowersList() {
     const username = useAppSelector((state) => state.userSearch.value);
     const dispatch = useAppDispatch();
 
-    const { data, error, isFetching } = useGetFollowersByUsernameQuery({
+    const { data, error, isLoading } = useGetFollowersByUsernameQuery({
         username,
         page: pageIndex + 1,
     });
@@ -93,7 +93,7 @@ export default function useFollowersList() {
         table,
         pageIndex,
         error,
-        isFetching,
+        isLoading,
         noFollowers:
             data?.followers.length === 0
                 ? () => <NoFollowers username={username} />

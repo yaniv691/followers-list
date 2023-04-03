@@ -1,22 +1,33 @@
 import { MutableRefObject } from 'react';
 import { ButtonGroup, Button, Flex, Box, Show } from '@chakra-ui/react';
-import { Table } from '@tanstack/table-core';
-import { FollowersListUser } from 'app/types';
+import usePaginationNavigateTo, {
+    PaginationNavigation,
+} from './usePaginationNavigateTo';
 
 interface PaginationProps {
-    table: Table<FollowersListUser>;
     pageIndex: number;
-    tableContainerRef: MutableRefObject<HTMLTableElement | null>;
+    pageCount: number;
+    paginationNavigation: PaginationNavigation;
+    scrollToTopContainerRef?: MutableRefObject<HTMLElement | null>;
+    pageIndexZeroBased?: boolean;
 }
 
 export default function Pagination({
-    table,
     pageIndex,
-    tableContainerRef,
+    scrollToTopContainerRef,
+    paginationNavigation,
+    pageCount,
+    pageIndexZeroBased = false,
 }: PaginationProps) {
-    if (table.getPageCount() < 2) {
+    const navigateTo = usePaginationNavigateTo(
+        paginationNavigation,
+        scrollToTopContainerRef
+    );
+
+    if (pageCount < 2) {
         return null;
     }
+
     return (
         <Flex
             position="sticky"
@@ -31,8 +42,8 @@ export default function Pagination({
                 <Box as="span" mr={4}>
                     <Box as="span">Page </Box>
                     <strong>
-                        {table.getState().pagination.pageIndex + 1} of{' '}
-                        {table.getPageCount()}
+                        {pageIndexZeroBased ? pageIndex + 1 : pageIndex} of{' '}
+                        {pageCount}
                     </strong>
                 </Box>
             </Show>
@@ -43,21 +54,17 @@ export default function Pagination({
                 variant="outline"
                 colorScheme="blue"
             >
-                <Button onClick={() => table.setPageIndex(0)}>First</Button>
-                {pageIndex !== 0 && (
-                    <Button onClick={() => table.previousPage()}>Prev</Button>
-                )}
-                {pageIndex < table.getPageCount() && (
-                    <Button onClick={() => table.nextPage()}>Next</Button>
-                )}
+                <Button onClick={() => navigateTo('first')}>First</Button>
                 <Button
-                    onClick={() => {
-                        table.setPageIndex(table.getPageCount() - 1);
-                        tableContainerRef!.current!.scrollTop = 0;
-                    }}
+                    disabled={pageIndex !== 0}
+                    onClick={() => navigateTo('previous')}
                 >
-                    Last
+                    Prev
                 </Button>
+                {pageIndex < pageCount && (
+                    <Button onClick={() => navigateTo('next')}>Next</Button>
+                )}
+                <Button onClick={() => navigateTo('last')}>Last</Button>
             </ButtonGroup>
         </Flex>
     );

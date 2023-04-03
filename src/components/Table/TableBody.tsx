@@ -5,16 +5,16 @@ import { FollowersListUser } from 'app/types';
 
 interface TableBodyProps {
     table: Table<FollowersListUser>;
-    isFetching: boolean;
+    isLoading: boolean;
 }
-export default function TableBody({ table, isFetching }: TableBodyProps) {
+export default function TableBody({ table, isLoading }: TableBodyProps) {
     return (
         <Tbody>
             {table.getRowModel().rows.map((row) => (
                 <Tr key={row.id}>
                     {row.getVisibleCells().map((cell) => (
                         <Td key={cell.id} py={3}>
-                            <Skeleton isLoaded={!isFetching}>
+                            <Skeleton isLoaded={!isLoading}>
                                 {flexRender(
                                     cell.column.columnDef.cell,
                                     cell.getContext()

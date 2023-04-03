@@ -20,7 +20,7 @@ export default function UserInfo() {
     const {
         data: userInfo,
         error,
-        isFetching,
+        isLoading,
     } = useGetUserByUsernameQuery(username);
     const {
         avatar_url,
@@ -49,7 +49,7 @@ export default function UserInfo() {
 
     return (
         <>
-            {isFetching ? (
+            {isLoading ? (
                 <Flex flexDirection="column">
                     <SkeletonCircle size={['100px', '250px']} />
                     <SkeletonText
