@@ -5,25 +5,36 @@ import { FollowersListUser } from 'app/types';
 
 interface TableBodyProps {
     table: Table<FollowersListUser>;
-    isLoading: boolean;
+    isFetching: boolean;
 }
-export default function TableBody({ table, isLoading }: TableBodyProps) {
+export default function TableBody({ table, isFetching }: TableBodyProps) {
     return (
         <Tbody>
-            {table.getRowModel().rows.map((row) => (
-                <Tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                        <Td key={cell.id} py={3}>
-                            <Skeleton isLoaded={!isLoading}>
-                                {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext()
-                                )}
-                            </Skeleton>
-                        </Td>
-                    ))}
-                </Tr>
-            ))}
+            {isFetching
+                ? Array(30)
+                      .fill({})
+                      .map((row) => (
+                          <Tr>
+                              <Td width="60">
+                                  <Skeleton h="50px" w="100%" />
+                              </Td>
+                              <Td width="40%">
+                                  <Skeleton h="50px" w="100%" />
+                              </Td>
+                          </Tr>
+                      ))
+                : table.getRowModel().rows.map((row) => (
+                      <Tr key={row.id}>
+                          {row.getVisibleCells().map((cell) => (
+                              <Td key={cell.id} py={3}>
+                                  {flexRender(
+                                      cell.column.columnDef.cell,
+                                      cell.getContext()
+                                  )}
+                              </Td>
+                          ))}
+                      </Tr>
+                  ))}
         </Tbody>
     );
 }

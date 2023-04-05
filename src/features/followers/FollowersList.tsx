@@ -4,7 +4,7 @@ import { isFetchBaseQueryError } from 'app/utils';
 import useFollowersList from './useFollowersList';
 
 export default function FollowersList() {
-    const { table, pageIndex, error, isLoading, noFollowers } =
+    const { table, pageIndex, error, isFetching, noFollowers } =
         useFollowersList();
 
     const errorToast = useErrorToast(
@@ -22,5 +22,7 @@ export default function FollowersList() {
         return noFollowers();
     }
 
-    return <Table isLoading={isLoading} pageIndex={pageIndex} table={table} />;
+    return (
+        <Table isFetching={isFetching} pageIndex={pageIndex} table={table} />
+    );
 }

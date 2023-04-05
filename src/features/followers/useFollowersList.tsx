@@ -28,7 +28,7 @@ export default function useFollowersList() {
     const username = useAppSelector((state) => state.userSearch.value);
     const dispatch = useAppDispatch();
 
-    const { data, error, isLoading } = useGetFollowersByUsernameQuery({
+    const { data, error, isFetching } = useGetFollowersByUsernameQuery({
         username,
         page: pageIndex + 1,
     });
@@ -41,11 +41,12 @@ export default function useFollowersList() {
         setPagination({ pageIndex: 0, pageSize: PAGE_SIZE });
     }, [username]);
 
-    const columns = useMemo<ColumnDef<FollowersListUser>[]>(
+    const columns = useMemo<ColumnDef<any>[]>(
         () => [
             {
                 header: 'Username',
                 accessorKey: 'login',
+                width: '60',
                 cell: ({ cell }) => {
                     const { avatar_url, login, html_url } = cell.row.original;
                     return (
@@ -66,13 +67,15 @@ export default function useFollowersList() {
             {
                 header: 'ID',
                 accessorKey: 'id',
+                width: '40',
             },
         ],
         []
     );
+
     const table = useReactTable({
-        data: data?.followers ?? [],
-        columns,
+        data: data?.followers || [],
+        columns: columns,
         pageCount: totalPages,
         state: {
             sorting,
@@ -93,7 +96,7 @@ export default function useFollowersList() {
         table,
         pageIndex,
         error,
-        isLoading,
+        isFetching,
         noFollowers:
             data?.followers.length === 0
                 ? () => <NoFollowers username={username} />

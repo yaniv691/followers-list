@@ -7,12 +7,12 @@ import { Table as TanstackTable } from '@tanstack/table-core';
 import { FollowersListUser } from 'app/types';
 
 interface TableProps {
-    isLoading: boolean;
+    isFetching: boolean;
     pageIndex: number;
     table: TanstackTable<FollowersListUser>;
 }
 
-export default function Table({ table, isLoading, pageIndex }: TableProps) {
+export default function Table({ table, isFetching, pageIndex }: TableProps) {
     const tableContainerRef = useRef<null | HTMLTableElement>(null);
 
     const paginationNavigation = {
@@ -31,7 +31,7 @@ export default function Table({ table, isLoading, pageIndex }: TableProps) {
             >
                 <ChakraTable variant="striped">
                     <TableHead table={table} />
-                    <TableBody table={table} isLoading={isLoading} />
+                    <TableBody table={table} isFetching={isFetching} />
                 </ChakraTable>
                 <Pagination
                     pageCount={table.getPageCount()}
