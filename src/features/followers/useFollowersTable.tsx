@@ -1,32 +1,22 @@
 import { useMemo, useState, useEffect } from 'react';
-import {
-    PaginationState,
-    useReactTable,
-    getCoreRowModel,
-    ColumnDef,
-    SortingState,
-    getSortedRowModel,
-} from '@tanstack/react-table';
+import { PaginationState, ColumnDef } from '@tanstack/react-table';
 import { Avatar, Flex, Link } from '@chakra-ui/react';
-
 import { useGetFollowersByUsernameQuery } from 'services/github-api';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { FollowersListUser } from 'app/types';
+import { FollowersTableUser } from 'app/types';
 import { updateTotalPages } from 'features/followers/followersSlice';
-import NoFollowers from './NoFollowers';
 
 const PAGE_SIZE = 30;
 
-export default function useFollowersList() {
+export default function useFollowersTable() {
+    const totalPages = useAppSelector((state) => state.followers.totalPages);
+    const username = useAppSelector((state) => state.userSearch.value);
+    const dispatch = useAppDispatch();
+
     const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: PAGE_SIZE,
     });
-    const [sorting, setSorting] = useState<SortingState>([]);
-
-    const totalPages = useAppSelector((state) => state.followers.totalPages);
-    const username = useAppSelector((state) => state.userSearch.value);
-    const dispatch = useAppDispatch();
 
     const { data, error, isFetching } = useGetFollowersByUsernameQuery({
         username,
@@ -35,18 +25,17 @@ export default function useFollowersList() {
 
     useEffect(() => {
         data?.totalPages && dispatch(updateTotalPages(data.totalPages));
-    }, [data?.totalPages]);
+    }, [data?.totalPages, dispatch]);
 
     useEffect(() => {
         setPagination({ pageIndex: 0, pageSize: PAGE_SIZE });
     }, [username]);
 
-    const columns = useMemo<ColumnDef<any>[]>(
+    const columns = useMemo<ColumnDef<FollowersTableUser>[]>(
         () => [
             {
                 header: 'Username',
                 accessorKey: 'login',
-                width: '60',
                 cell: ({ cell }) => {
                     const { avatar_url, login, html_url } = cell.row.original;
                     return (
@@ -67,39 +56,22 @@ export default function useFollowersList() {
             {
                 header: 'ID',
                 accessorKey: 'id',
-                width: '40',
             },
         ],
         []
     );
 
-    const table = useReactTable({
-        data: data?.followers || [],
-        columns: columns,
-        pageCount: totalPages,
-        state: {
-            sorting,
-            pagination: {
-                pageIndex,
-                pageSize,
-            },
-        },
-        onSortingChange: setSorting,
-        onPaginationChange: setPagination,
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        manualPagination: true,
-        debugTable: false,
-    });
-
     return {
-        table,
-        pageIndex,
+        columns,
+        pagination: {
+            pageIndex,
+            pageSize,
+            setPagination,
+            totalPages,
+        },
+        data: data?.followers,
         error,
         isFetching,
-        noFollowers:
-            data?.followers.length === 0
-                ? () => <NoFollowers username={username} />
-                : null,
+        username,
     };
 }

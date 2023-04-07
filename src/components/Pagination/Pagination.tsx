@@ -1,4 +1,4 @@
-import { MutableRefObject } from 'react';
+import { MutableRefObject, Dispatch, SetStateAction } from 'react';
 import { ButtonGroup, Button, Flex, Box, Show } from '@chakra-ui/react';
 import usePaginationNavigateTo, {
     PaginationNavigation,
@@ -6,17 +6,24 @@ import usePaginationNavigateTo, {
 
 interface PaginationProps {
     pageIndex: number;
-    pageCount: number;
+    totalPages: number;
     paginationNavigation: PaginationNavigation;
     scrollToTopContainerRef?: MutableRefObject<HTMLElement | null>;
     pageIndexZeroBased?: boolean;
+}
+
+export interface PaginationConfig {
+    pageSize: number;
+    pageIndex: number;
+    totalPages: number | undefined;
+    setPagination: Dispatch<SetStateAction<any>>;
 }
 
 export default function Pagination({
     pageIndex,
     scrollToTopContainerRef,
     paginationNavigation,
-    pageCount,
+    totalPages,
     pageIndexZeroBased = false,
 }: PaginationProps) {
     const navigateTo = usePaginationNavigateTo(
@@ -24,7 +31,7 @@ export default function Pagination({
         scrollToTopContainerRef
     );
 
-    if (pageCount < 2) {
+    if (totalPages < 2) {
         return null;
     }
 
@@ -43,7 +50,7 @@ export default function Pagination({
                     <Box as="span">Page </Box>
                     <strong>
                         {pageIndexZeroBased ? pageIndex + 1 : pageIndex} of{' '}
-                        {pageCount}
+                        {totalPages}
                     </strong>
                 </Box>
             </Show>
@@ -61,7 +68,7 @@ export default function Pagination({
                 >
                     Prev
                 </Button>
-                {pageIndex < pageCount && (
+                {pageIndex < totalPages && (
                     <Button onClick={() => navigateTo('next')}>Next</Button>
                 )}
                 <Button onClick={() => navigateTo('last')}>Last</Button>

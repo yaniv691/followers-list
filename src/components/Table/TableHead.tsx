@@ -2,10 +2,10 @@ import { Thead, Tr, Th, Flex } from '@chakra-ui/react';
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
 import { flexRender } from '@tanstack/react-table';
 import { Table } from '@tanstack/table-core';
-import { FollowersListUser } from 'app/types';
+import { FollowersTableUser } from 'app/types';
 
 interface TableHeadProps {
-    table: Table<FollowersListUser>;
+    table: Table<FollowersTableUser>;
 }
 export default function TableHead({ table }: TableHeadProps) {
     return (

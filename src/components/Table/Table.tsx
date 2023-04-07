@@ -3,24 +3,37 @@ import { TableContainer, Table as ChakraTable } from '@chakra-ui/react';
 import Pagination from '../Pagination/Pagination';
 import TableBody from './TableBody';
 import TableHead from './TableHead';
-import { Table as TanstackTable } from '@tanstack/table-core';
-import { FollowersListUser } from 'app/types';
+import { useTable } from './useTable';
+import { PaginationConfig } from 'components/Pagination/Pagination';
 
 interface TableProps {
-    isFetching: boolean;
-    pageIndex: number;
-    table: TanstackTable<FollowersListUser>;
+    isFetching?: boolean | undefined;
+    columns: any;
+    data: any[];
+    pagination?: PaginationConfig;
+    emptyState?: JSX.Element;
 }
 
-export default function Table({ table, isFetching, pageIndex }: TableProps) {
-    const tableContainerRef = useRef<null | HTMLTableElement>(null);
+export default function Table({
+    columns,
+    data,
+    isFetching,
+    pagination,
+    emptyState,
+}: TableProps) {
+    const table = useTable(columns, data, pagination);
 
+    const tableContainerRef = useRef<null | HTMLTableElement>(null);
     const paginationNavigation = {
         first: () => table.setPageIndex(0),
         last: () => table.setPageIndex(table.getPageCount() - 1),
         previous: () => table.previousPage(),
         next: () => table.nextPage(),
     };
+
+    if (emptyState && !isFetching && data?.length === 0) {
+        return emptyState;
+    }
 
     return (
         <>
@@ -31,15 +44,21 @@ export default function Table({ table, isFetching, pageIndex }: TableProps) {
             >
                 <ChakraTable variant="striped">
                     <TableHead table={table} />
-                    <TableBody table={table} isFetching={isFetching} />
+                    <TableBody
+                        table={table}
+                        isFetching={isFetching}
+                        pageSize={pagination?.pageSize ?? 30}
+                    />
                 </ChakraTable>
-                <Pagination
-                    pageCount={table.getPageCount()}
-                    paginationNavigation={paginationNavigation}
-                    pageIndex={pageIndex}
-                    scrollToTopContainerRef={tableContainerRef}
-                    pageIndexZeroBased
-                />
+                {pagination && (
+                    <Pagination
+                        totalPages={table.getPageCount()}
+                        paginationNavigation={paginationNavigation}
+                        pageIndex={pagination.pageIndex}
+                        scrollToTopContainerRef={tableContainerRef}
+                        pageIndexZeroBased
+                    />
+                )}
             </TableContainer>
         </>
     );

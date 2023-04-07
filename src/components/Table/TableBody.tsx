@@ -1,26 +1,33 @@
 import { Tbody, Tr, Td, Skeleton } from '@chakra-ui/react';
 import { flexRender } from '@tanstack/react-table';
 import { Table } from '@tanstack/table-core';
-import { FollowersListUser } from 'app/types';
+import { FollowersTableUser } from 'app/types';
 
 interface TableBodyProps {
-    table: Table<FollowersListUser>;
-    isFetching: boolean;
+    table: Table<FollowersTableUser>;
+    isFetching?: boolean | boolean;
+    pageSize: number;
 }
-export default function TableBody({ table, isFetching }: TableBodyProps) {
+export default function TableBody({
+    table,
+    isFetching,
+    pageSize,
+}: TableBodyProps) {
     return (
         <Tbody>
             {isFetching
-                ? Array(30)
+                ? Array(pageSize)
                       .fill({})
-                      .map((row) => (
-                          <Tr>
-                              <Td width="60">
-                                  <Skeleton h="50px" w="100%" />
-                              </Td>
-                              <Td width="40%">
-                                  <Skeleton h="50px" w="100%" />
-                              </Td>
+                      .map((_, index) => (
+                          <Tr key={`table-skeleton-row-${index}`}>
+                              {table.getAllColumns().map((column) => (
+                                  <Td key={column.id}>
+                                      <Skeleton
+                                          h={['20px', '30px', '50px']}
+                                          w="100%"
+                                      />
+                                  </Td>
+                              ))}
                           </Tr>
                       ))
                 : table.getRowModel().rows.map((row) => (

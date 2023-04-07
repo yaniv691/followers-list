@@ -1,5 +1,5 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import FollowersList from 'features/followers/FollowersList';
+import FollowersTable from 'features/followers/FollowersTable';
 import UserInfo from 'features/user-info/UserInfo';
 import UserSearch from './features/user-search/UserSearch';
 import Header from 'features/header/Header';
@@ -34,7 +34,7 @@ function App() {
                         <UserInfo />
                     </GridItem>
                     <GridItem area={'main'} minHeight="0">
-                        <FollowersList />
+                        <FollowersTable />
                     </GridItem>
                 </>
             )}
