@@ -40,7 +40,7 @@ export default function useFollowersTable() {
                     const { avatar_url, login, html_url } = cell.row.original;
                     return (
                         <Link href={html_url} isExternal>
-                            <Flex alignItems="center">
+                            <Flex alignItems="center" display="inline-flex">
                                 <Avatar
                                     size={['sm', 'md']}
                                     src={avatar_url}

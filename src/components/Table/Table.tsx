@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { TableContainer, Table as ChakraTable } from '@chakra-ui/react';
-import Pagination from '../Pagination/Pagination';
+import { ColumnDef } from '@tanstack/react-table';
+import Pagination from 'components/Pagination/Pagination';
 import TableBody from './TableBody';
 import TableHead from './TableHead';
 import { useTable } from './useTable';
@@ -8,8 +9,8 @@ import { PaginationConfig } from 'components/Pagination/Pagination';
 
 interface TableProps {
     isFetching?: boolean | undefined;
-    columns: any;
-    data: any[];
+    columns: ColumnDef<any>[];
+    data: unknown[];
     pagination?: PaginationConfig;
     emptyState?: JSX.Element;
 }
